@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 
 class RippleData {
   RippleData({
-    @required this.context,
-    @required this.color,
-    @required this.animationDuration,
-    @required this.delay,
-    @required this.shape,
-    @required this.inflateMultiplier,
+    required this.context,
+    required this.color,
+    required this.animationDuration,
+    required this.delay,
+    required this.shape,
+    required this.inflateMultiplier,
   });
 
   final BuildContext context;
@@ -17,7 +17,7 @@ class RippleData {
   final BoxShape shape;
   final double inflateMultiplier;
 
-  Rect rect;
+  Rect? rect;
 
   Widget toWidget() {
     if (rect == null) {
@@ -25,10 +25,10 @@ class RippleData {
     }
 
     return AnimatedPositioned(
-      left: rect.left,
-      top: rect.top,
-      right: MediaQuery.of(context).size.width - rect.right,
-      bottom: MediaQuery.of(context).size.height - rect.bottom,
+      left: rect!.left,
+      top: rect!.top,
+      right: MediaQuery.of(context).size.width - rect!.right,
+      bottom: MediaQuery.of(context).size.height - rect!.bottom,
       child: Container(
         decoration: BoxDecoration(
           shape: shape,

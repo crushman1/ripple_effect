@@ -27,8 +27,8 @@ import 'ripple_data.dart';
 /// ```
 class RipplePage extends StatefulWidget {
   RipplePage({
-    @required GlobalKey<_RipplePageState> pageKey,
-    @required this.child,
+    required GlobalKey<_RipplePageState> pageKey,
+    required this.child,
   }) : super(key: pageKey);
 
   final Widget child;
@@ -54,15 +54,15 @@ class _RipplePageState extends State<RipplePage> {
   Future<void> addRipple(GlobalKey key, RippleData data) async =>
       this.ripples[key] = data;
 
-  Future<void> startAnimation(GlobalKey key, VoidCallback callback) async {
+  Future<void> startAnimation(GlobalKey<RectGetterState> key, VoidCallback callback) async {
     final data = ripples[key];
 
     setState(() {
-      data.rect = RectGetter.getRectFromKey(key);
+      data!.rect = RectGetter.getRectFromKey(key);
     });
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final inflateSize =
-          data.inflateMultiplier * MediaQuery.of(context).size.longestSide;
+          data!.inflateMultiplier * MediaQuery.of(context).size.longestSide;
       setState(() {
         data.rect = data.rect?.inflate(inflateSize);
       });
@@ -91,10 +91,10 @@ class _RipplePageState extends State<RipplePage> {
 /// ```
 class RippleEffect extends StatefulWidget {
   RippleEffect({
-    @required this.pageKey,
-    @required this.effectKey,
-    @required this.color,
-    @required this.child,
+    required this.pageKey,
+    required this.effectKey,
+    required this.color,
+    required this.child,
     this.animationDuration = const Duration(milliseconds: 300),
     this.delay = const Duration(milliseconds: 300),
     this.shape = BoxShape.circle,
@@ -121,12 +121,12 @@ class RippleEffect extends StatefulWidget {
     GlobalKey<_RippleEffectState> rippleEffectKey,
     VoidCallback callback,
   ) {
-    final rippleEffectState = rippleEffectKey?.currentState;
+    final rippleEffectState = rippleEffectKey.currentState;
 
-    final rippleState = rippleEffectState.widget?.pageKey?.currentState;
+    final rippleState = rippleEffectState!.widget.pageKey.currentState;
 
-    return rippleState?.startAnimation(
-        rippleEffectState?.rectGetterKey, callback);
+    return rippleState!.startAnimation(
+        rippleEffectState.rectGetterKey, callback);
   }
 }
 
@@ -144,7 +144,7 @@ class _RippleEffectState extends State<RippleEffect> {
       shape: widget.shape,
       inflateMultiplier: widget.inflateMultiplier,
     );
-    widget.pageKey.currentState.addRipple(rectGetterKey, data);
+    widget.pageKey.currentState!.addRipple(rectGetterKey, data);
   }
 
   @override
